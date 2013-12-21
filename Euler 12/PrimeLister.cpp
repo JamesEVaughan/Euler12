@@ -18,6 +18,7 @@ PrimeLister::~PrimeLister() {
 }
 
 unsigned long long PrimeLister::addNode(unsigned long long prime) {
+	cout << "Adding prime: " << prime << endl;
 	PrimeNode *tempy = new PrimeNode(prime);
 	if (tempy == NULL) {
 		return -1;
@@ -51,7 +52,7 @@ unsigned long long PrimeLister::nextPrime() {
 		}
 
 		if (cur == NULL) {
-			tail->next = new PrimeNode(tempy);
+			addNode(tempy);
 			primeFound = true;
 		}
 	}
@@ -94,13 +95,45 @@ string PrimeLister::toString() {
 
 	// Prime the pump
 	tempy = to_string(cur->prime);
+	cur = cur->next;
 
-	while (cur != NULL) {
+	do {
 		tempy += ", " + to_string(cur->prime);
+		cur = cur->next;
+	} while (cur != NULL);
+
+	return tempy;
+}
+
+bool PrimeLister::isItPrime(unsigned long long val) {
+	// Minor short circuit, search until we find it
+	while (val > biggestPrime()) {
+		if(nextPrime() == val) {
+			return true;
+		}
+		else if (tail->prime > val) {
+			return false;
+		}
+	}
+
+	PrimeNode *cur = head;
+
+	while (cur->prime < val) {
 		cur = cur->next;
 	}
 
-	return tempy;
+	return cur->prime == val;
+}
+
+unsigned long long PrimeLister::popAPrime() {
+	if (cur == tail || cur == NULL) {
+		return 0;
+	}
+
+	unsigned long long ans = cur->prime;
+	cur = cur->next;
+
+	return ans;
 }
 
 // PrimeNode

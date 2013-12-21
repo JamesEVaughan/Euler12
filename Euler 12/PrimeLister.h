@@ -34,15 +34,23 @@ public:
 
 	// Output functions
 	string toString();
+	unsigned long long biggestPrime();	// Biggest prime found, last->value
+
+	// Iteration
+	unsigned long long popAPrime();
+	void resetCur() {cur = head;}
+
+	// Comparison functions
+	bool isItPrime(unsigned long long val);	// Compares against known primes, finds primes if val > biggestPrime()
 
 private:
 	// The list
 	PrimeNode *head;	// Head of the list
 	PrimeNode *tail;	// Tail of the list
+	PrimeNode *cur;
 
 
 	// Helper methods
-	unsigned long long biggestPrime();	// Biggest prime found, last->value
 
 	// Adds next PrimeNode
 	unsigned long long addNode(unsigned long long prime);
